@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.paulz.user.model.Role;
-import com.paulz.user.model.User;
+import com.paulz.user.entity.Role;
+import com.paulz.user.entity.User;
 import com.paulz.user.repository.RoleRepository;
 import com.paulz.user.repository.UserRepository;
 

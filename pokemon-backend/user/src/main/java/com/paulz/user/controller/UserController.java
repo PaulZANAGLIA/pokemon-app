@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.paulz.user.model.User;
+import com.paulz.user.entity.User;
 import com.paulz.user.service.UserService;
 
 import jakarta.validation.Valid;

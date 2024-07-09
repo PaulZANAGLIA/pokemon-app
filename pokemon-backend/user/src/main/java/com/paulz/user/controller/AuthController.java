@@ -10,11 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paulz.user.entity.Role;
+import com.paulz.user.entity.User;
 import com.paulz.user.model.LoginRequest;
 import com.paulz.user.model.LoginResponse;
 import com.paulz.user.model.RegisterRequest;
-import com.paulz.user.model.Role;
-import com.paulz.user.model.User;
 import com.paulz.user.security.JwtUtil;
 import com.paulz.user.service.RoleService;
 import com.paulz.user.service.UserService;

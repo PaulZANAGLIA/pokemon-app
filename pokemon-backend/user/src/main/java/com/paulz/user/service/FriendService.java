@@ -6,7 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.paulz.user.model.User;
+import com.paulz.user.entity.User;
 import com.paulz.user.repository.UserRepository;
 
 @Service

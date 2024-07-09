@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.paulz.user.model.User;
+import com.paulz.user.entity.User;
 import com.paulz.user.service.FriendService;
 
 @RestController
