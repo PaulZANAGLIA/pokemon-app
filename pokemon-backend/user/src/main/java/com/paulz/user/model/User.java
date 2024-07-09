@@ -1,5 +1,6 @@
 package com.paulz.user.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -41,4 +42,7 @@ public class User {
 
     @ManyToMany 
     private Set<Role> roles;
+
+    @ManyToMany
+    private Set<User> friends = new HashSet<>();
 }

@@ -48,13 +48,13 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
-    public Optional<User> deleteUser(long id){
+    public boolean deleteUser(long id){
         Optional<User> optionalUser = this.userRepository.findById(id);
         if(optionalUser.isPresent()) {
             this.userRepository.deleteById(id);
-            return optionalUser;
+            return true;
         }
-        return Optional.empty();
+        return false;
     }
 
     public List<User> getUsers(){

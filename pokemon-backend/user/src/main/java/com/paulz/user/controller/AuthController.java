@@ -1,6 +1,7 @@
 package com.paulz.user.controller;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -14,9 +15,9 @@ import com.paulz.user.model.LoginResponse;
 import com.paulz.user.model.RegisterRequest;
 import com.paulz.user.model.Role;
 import com.paulz.user.model.User;
+import com.paulz.user.security.JwtUtil;
 import com.paulz.user.service.RoleService;
 import com.paulz.user.service.UserService;
-import com.paulz.user.utility.JwtUtil;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,30 +42,34 @@ public class AuthController {
     
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@Valid @RequestBody RegisterRequest userForm) {
-        System.out.println(userForm);
-        User user = new User();
-        user.setUsername(userForm.getUsername());
-        user.setEmail(userForm.getEmail());
-        user.setPassword(userForm.getPassword());
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest userForm) {
+        try {
+            User user = new User();
+            user.setUsername(userForm.getUsername());
+            user.setEmail(userForm.getEmail());
+            user.setPassword(userForm.getPassword());
 
-        HashSet<Role> roles = new HashSet<>();
-        roles.add(this.roleService.getRoleByName("MEMBER"));
-        user.setRoles(roles);
+            HashSet<Role> roles = new HashSet<>();
+            roles.add(this.roleService.getRoleByName("MEMBER"));
+            user.setRoles(roles);
 
-        User registeredUser = userService.registerUser(user);
-        return ResponseEntity.ok(registeredUser);
+            User registeredUser = userService.registerUser(user);
+            return ResponseEntity.ok(registeredUser);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginRequest request) {
         Optional<User> loggedUser = userService.loginUser(request.getEmail(), request.getPassword());
+        List<String> roles = loggedUser.map(user -> user.getRoles().stream().map(r -> r.getName()).toList()).orElseGet(List::of);
         return loggedUser
             .map(user ->  ResponseEntity.ok(
                 LoginResponse
                     .builder()
                     .accessToken(
-                        jwtUtil.generateToken(user.getId(), user.getEmail(), user.getRoles())
+                        jwtUtil.generateToken(user.getId(), user.getEmail(), roles)
                     ).build()
             ))
             .orElseGet(() -> ResponseEntity.status(401).build());
