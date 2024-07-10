@@ -11,5 +11,6 @@ import lombok.Setter;
 @Configuration
 @ConfigurationProperties("security.jwt")
 public class SecurityJwtProperties {
+    public final static int jwtValidityDays = 1;
     private String secret;
 }

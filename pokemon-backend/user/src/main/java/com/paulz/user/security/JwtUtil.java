@@ -1,7 +1,6 @@
 package com.paulz.user.security;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,8 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtUtil {
     private final SecurityJwtProperties jwtProperties;
-
-    private static final int VALIDITY_DAYS = 15;
+    private static final int VALIDITY_DAYS = SecurityJwtProperties.jwtValidityDays;
 
     public String generateToken(long userId, String email, List<String> roles){
         return JWT
@@ -41,7 +39,6 @@ public class JwtUtil {
         return UserPrincipal.builder()
             .userId(Long.valueOf(jwt.getSubject()))
             .email(jwt.getClaim("email").asString())
-            .roles(new HashSet<>(jwt.getClaim("roles").asList(String.class)))
             .authorities(extractAuthoritiesFromClaim(jwt))
             .build();
     }

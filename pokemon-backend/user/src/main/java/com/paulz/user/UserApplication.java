@@ -1,7 +1,7 @@
 package com.paulz.user;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -41,15 +41,12 @@ public class UserApplication {
             // Define root user
             if (!userRepository.findByEmail("paulzanaglia@gmail.com").isPresent()) {
                 User rootUser = new User();
-                rootUser.setUsername("root");
                 rootUser.setEmail("paulzanaglia06@gmail.com");
+                rootUser.setUsername("root");
                 rootUser.setPassword(passwordEncoder.encode("root"));
-
-                HashSet<Role> roles = new HashSet<>();
-                Role adminRole = roleRepository.findByName("ADMIN");
-                roles.add(adminRole);
-                rootUser.setRoles(roles);
-
+                rootUser.setElo(0);
+                rootUser.setRoles(Set.of(roleRepository.findByName("ADMIN")));
+                rootUser.setFriends(Set.of());
                 userRepository.save(rootUser);
             }
         };
