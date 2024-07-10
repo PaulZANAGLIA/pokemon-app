@@ -41,6 +41,8 @@ public class SecurityConfig {
                 .requestMatchers("/").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyAuthority("ADMIN", "MODERATOR")
+                .requestMatchers("/api/roles/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
             );
                 
