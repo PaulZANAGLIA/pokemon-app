@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +20,16 @@ import com.paulz.user.service.UserService;
 public class FriendController {
     @Autowired
     private UserService userService;
-
+    
     @GetMapping("/{userId}")
     public ResponseEntity<List<UserDto>> getFriends(@PathVariable long userId) {
         return ResponseEntity.ok(userService.getFriends(userId));
     }
 
     @DeleteMapping("/{userId}/{friendId}")
+    @PreAuthorize(
+        "#userId == authentication.principal.userId"
+    )
     public ResponseEntity<String> removeFriend(@PathVariable long userId, @PathVariable long friendId) {
         try {
             userService.removeFriend(userId, friendId);
@@ -36,8 +40,12 @@ public class FriendController {
     }
 
     @PostMapping("/{userId}/{friendId}")
+    @PreAuthorize(
+        "#userId == authentication.principal.userId"
+    )
     public ResponseEntity<?> addFriend(@PathVariable long userId, @PathVariable long friendId) {
         try {
+            
             userService.addFriend(userId, friendId);
             List<UserDto> friends = userService.getFriends(userId);
             return ResponseEntity.ok(friends);

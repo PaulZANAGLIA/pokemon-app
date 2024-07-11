@@ -21,13 +21,13 @@ public class UserDetailService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    public Optional<User> getUserByEmail(String email) {
+    private Optional<User> getUserByEmail(String email) {
         return this.userRepository.findByEmail(email);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = getUserByEmail(username).orElseThrow();
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        var user = getUserByEmail(email).orElseThrow();
         return UserPrincipal.builder()
             .userId(user.getId())
             .email(user.getEmail())

@@ -2,12 +2,14 @@ package com.paulz.user.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.paulz.user.dto.UserDto;
+import com.paulz.user.entity.Role;
 import com.paulz.user.entity.User;
 import com.paulz.user.repository.RoleRepository;
 import com.paulz.user.repository.UserRepository;
@@ -43,6 +45,11 @@ public class UserService {
         user.setRoles(userDto.getRoles().stream().map(roleRepository::findByName).collect(Collectors.toSet()));
         user.setFriends(userDto.getFriends().stream().map(userRepository::findById).map(Optional::get).collect(Collectors.toSet()));
         return user;
+    }
+
+    public Set<Role> getUserRoleById(long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found, id:" + userId));
+        return user.getRoles(); // Supposons que la classe User a une méthode getRole() qui renvoie le rôle de l'utilisateur
     }
 
     public UserDto registerUser(@Valid UserDto userDto){

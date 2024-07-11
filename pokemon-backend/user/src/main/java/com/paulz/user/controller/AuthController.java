@@ -19,6 +19,7 @@ import com.paulz.user.security.JwtUtil;
 import com.paulz.user.security.UserPrincipal;
 import com.paulz.user.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -71,4 +72,23 @@ public class AuthController {
             .accessToken(token)
             .build();
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7); // Extraction du token JWT sans le préfixe "Bearer "
+
+            // Valider et invalider le token JWT
+            jwtUtil.invalidateToken(token);
+
+            // Effacer le contexte d'authentification Spring Security
+            SecurityContextHolder.clearContext();
+        }
+
+        return ResponseEntity.ok("Logged out successfully");
+    }
+
+
 }

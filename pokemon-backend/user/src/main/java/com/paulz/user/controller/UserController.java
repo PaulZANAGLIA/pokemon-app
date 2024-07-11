@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,13 +29,24 @@ public class UserController {
     private UserService userService;
 
     @PutMapping("/{id}")
+    @PreAuthorize(
+        "hasAuthority('ADMIN') or " +
+        "(hasAuthority('MODERATOR') and @userService.getUserRoleById(#id).![name].contains('MEMBER')) or " +
+        "(hasAuthority('MEMBER') and #id == authentication.principal.userId)"
+    )
     public ResponseEntity<UserDto> updateUser(@PathVariable long id, @Valid @RequestBody UserDto userDto) {
        UserDto updatedUser = userService.updateUser(id, userDto);
        return ResponseEntity.ok(updatedUser);
     }
 
+    
     @DeleteMapping("/{id}")
+    @PreAuthorize(
+        "hasAuthority('ADMIN') or " +
+        "(hasAuthority('MODERATOR') and @userService.getUserRoleById(#id).![name].contains('MEMBER'))"
+    )
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
+        userService.getFriends(id).forEach(f -> userService.removeFriend(id, f.getId()));
         if(userService.deleteUser(id)) return ResponseEntity.ok().build();
         return ResponseEntity.notFound().build();
     }
@@ -56,3 +68,5 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 }
+
+
