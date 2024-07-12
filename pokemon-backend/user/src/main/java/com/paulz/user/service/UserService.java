@@ -24,7 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository  roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private static final int MAX_FRIENDS = 30;
+    static final int MAX_FRIENDS = 30;
 
     public UserDto convertToDto(User user){
         return UserDto.builder()
@@ -108,13 +108,6 @@ public class UserService {
             throw new jakarta.persistence.EntityNotFoundException("User not found.");
     
         User user = userOpt.get();
-        // System.out.println("++++++++++++USER+++++++++++");
-        // System.out.println(user.getFriends());
-        // System.out.println("+++++++++++++DTO++++++++++");
-        // System.out.println(user.getFriends().stream()
-        // .map(this::convertToDto)
-        // .collect(Collectors.toList()).toString());
-        // System.out.println("+++++++++++++++++++++++");
     
         return user.getFriends().stream()
                 .map(this::convertToDto)

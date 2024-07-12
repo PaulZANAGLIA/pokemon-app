@@ -15,10 +15,10 @@ public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public void createRole(String roleName){
+    public Role createRole(String roleName){
         Role role = new Role();
         role.setName(roleName);
-        roleRepository.save(role);
+        return roleRepository.save(role);
     }
 
     public List<Role> getRoles(){

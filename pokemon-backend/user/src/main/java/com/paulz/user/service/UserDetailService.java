@@ -1,6 +1,7 @@
 package com.paulz.user.service;
 
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,17 @@ public class UserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        var user = getUserByEmail(email).orElseThrow();
-        return UserPrincipal.builder()
-            .userId(user.getId())
-            .email(user.getEmail())
-            .authorities(user.getRoles().stream().map(r -> new SimpleGrantedAuthority(r.getName())).toList())
-            .password(user.getPassword())
-            .build();
+        try {
+            var user = getUserByEmail(email).orElseThrow();
+            return UserPrincipal.builder()
+                .userId(user.getId())
+                .email(user.getEmail())
+                .authorities(user.getRoles().stream().map(r -> new SimpleGrantedAuthority(r.getName())).toList())
+                .password(user.getPassword())
+                .build();
+        } catch (NoSuchElementException e) {
+            throw new UsernameNotFoundException(e.toString());
+        }
     }
     
 }
