@@ -14,11 +14,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.paulz.user.entity.Role;
 import com.paulz.user.repository.RoleRepository;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class RoleServiceTests {
 
     @Mock

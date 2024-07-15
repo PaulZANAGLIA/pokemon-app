@@ -80,7 +80,7 @@ public class AuthController {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7); // Extraction du token JWT sans le préfixe "Bearer "
 
-            // Valider et invalider le token JWT
+            // invalider le token JWT
             jwtUtil.invalidateToken(token);
 
             // Effacer le contexte d'authentification Spring Security

@@ -32,7 +32,7 @@ public class RoleController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Role>> getRoles(@Valid @RequestBody String role) {
+    public ResponseEntity<List<Role>> getRoles() {
         return ResponseEntity.ok(this.roleService.getRoles());
     }
 }

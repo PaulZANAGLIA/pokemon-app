@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.paulz.user.dto.UserDto;
 import com.paulz.user.entity.Role;
@@ -30,6 +31,7 @@ import com.paulz.user.repository.UserRepository;
 
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class UserServiceTests {
 
     @Mock
