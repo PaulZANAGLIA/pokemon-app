@@ -1,0 +1,53 @@
+<div class="flex flex-col h-full w-full justify-between">
+  <!-- Top Navigation Bar -->
+  <nav class="bg-yellow-400 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex space-x-4">
+        <a
+          routerLink="{{ indexPath.home }}"
+          routerLinkActive="border-b-2 border-white"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="text-lg text-white px-2 cursor-pointer border-b-2 border-transparent hover:border-b-2 hover:border-white transition-all"
+          >Home</a
+        >
+        <a
+          routerLink="{{ indexPath.profile }}"
+          routerLinkActive="border-b-2 border-white"
+          class="text-lg text-white px-2 cursor-pointer border-b-2 border-transparent hover:border-b-2 hover:border-white transition-all"
+          >Profile</a
+        >
+        <a
+          routerLink="{{ indexPath.teams }}"
+          routerLinkActive="border-b-2 border-white"
+          class="text-lg text-white px-2 cursor-pointer border-b-2 border-transparent hover:border-b-2 hover:border-white transition-all"
+          >Teams</a
+        >
+        <a
+          routerLink="{{ indexPath.searchTrainers }}"
+          routerLinkActive="border-b-2 border-white"
+          class="text-lg text-white px-2 cursor-pointer border-b-2 border-transparent hover:border-b-2 hover:border-white transition-all"
+          >Search Trainer</a
+        >
+      </div>
+      <div>
+        <a
+          routerLink="{{ indexPath.logout }}"
+          routerLinkActive="border-b-2 border-white"
+          class="text-lg text-white px-2 cursor-pointer border-b-2 border-transparent hover:border-b-2 hover:border-white transition-all"
+          >Logout</a
+        >
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dynamic Content -->
+  <div class="flex-grow">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-blue-500 p-4 text-white text-center">
+    This is a front page for a personal project to train Java Spring and Angular
+    realized by Paul ZANAGLIA.
+  </footer>
+</div>

@@ -1,0 +1,187 @@
+<!-- profile.component.html -->
+<div class="w-full h-full">
+  <div
+    class="flex flex-col h-full w-full bg-gradient-to-b from-yellow-400 to-amber-200"
+  >
+    <div class="bg-white border-b-4 border-black">
+      <h1 class="text-3xl font-bold mb-4 text-center pt-4">User Profile</h1>
+    </div>
+    <div class="flex-grow flex justify-center mt-14">
+      <div class="w-full max-w-sm">
+        <!-- Component loading -->
+        <div *ngIf="isLoading" class="flex justify-center items-center mt-14">
+          <div class="loader"></div>
+        </div>
+        <!-- If loaded, show user infos -->
+        <div
+          *ngIf="!isLoading && !isEditing"
+          class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        >
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="email"
+            >
+              Email
+            </label>
+            <p class="text-gray-700">{{ user?.email ?? "" }}</p>
+          </div>
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="username"
+            >
+              Username
+            </label>
+            <p class="text-gray-700">{{ user?.username ?? "" }}</p>
+          </div>
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="role"
+            >
+              Role
+            </label>
+            <p class="text-gray-700 font-bold">{{ user?.roles?.join(", ") }}</p>
+          </div>
+          <div class="flex items-center justify-between">
+            <button
+              class="bg-orange-400 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded"
+              type="button"
+              (click)="toggleEdit()"
+            >
+              Edit
+            </button>
+          </div>
+        </div>
+        <!-- If loaded, and if editing, show edition fields -->
+        <div
+          *ngIf="!isLoading && isEditing"
+          class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        >
+          <form
+            ngNativeValidate
+            (ngSubmit)="updateProfile()"
+            [formGroup]="userForm"
+          >
+            <div class="mb-4">
+              <label
+                class="block text-gray-700 text-sm font-bold mb-2"
+                for="email"
+              >
+                Email
+              </label>
+              <input
+                formControlName="email"
+                placeholder="{{ user?.email ?? '' }}"
+                name="email"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="email"
+                type="email"
+              />
+            </div>
+            <div class="mb-4">
+              <label
+                class="block text-gray-700 text-sm font-bold mb-2"
+                for="username"
+              >
+                Username
+              </label>
+              <input
+                formControlName="username"
+                placeholder="{{ user?.username ?? '' }}"
+                name="username"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="username"
+                type="text"
+              />
+            </div>
+            <div class="mb-4">
+              <label
+                class="block text-gray-700 text-sm font-bold mb-2"
+                for="password"
+              >
+                Password
+              </label>
+              <input
+                formControlName="password"
+                name="password"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="password"
+                type="password"
+              />
+            </div>
+            <div class="mb-4">
+              <label
+                class="block text-gray-700 text-sm font-bold mb-2"
+                for="passwordVerif"
+              >
+                Confirm Password
+              </label>
+              <input
+                formControlName="passwordVerif"
+                name="passwordVerif"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="passwordVerif"
+                type="password"
+              />
+            </div>
+            <div class="flex items-center justify-between">
+              <button
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                type="submit"
+              >
+                Update
+              </button>
+              <button
+                class="bg-red-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                type="button"
+                (click)="toggleEdit()"
+              >
+                Cancel
+              </button>
+            </div>
+            <div
+              *ngIf="hasUserUpdateFormErrors() && message.length"
+              class="mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+              role="alert"
+            >
+              {{ message }}
+
+              <div
+                *ngIf="userForm.get('password')!.hasError('pattern')"
+                class="mt-6"
+              >
+                ● Password should be at least 6 characters.
+              </div>
+
+              <div
+                *ngIf="
+                  userForm.get('username')!.hasError('minlength') ||
+                  userForm.get('username')!.hasError('maxlength')
+                "
+                class="mt-6"
+              >
+                ● Username should be between 3 to 15 characters.
+              </div>
+
+              <div
+                *ngIf="userForm.hasError('passwordsDoNotMatch')"
+                class="mt-6"
+              >
+                ● Passwords do not match.
+              </div>
+            </div>
+            <div
+              *ngIf="apiErrorMessage.length"
+              class="mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+              role="alert"
+            >
+              ● {{ apiErrorMessage }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

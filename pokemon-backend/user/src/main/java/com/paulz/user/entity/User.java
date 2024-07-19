@@ -37,13 +37,13 @@ public class User {
     @Email
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     @NotBlank
     private String username;
 
     @Column(nullable = false)
     @NotBlank
-    @Size(min = 8)
+    @Size(min = 6)
     @JsonIgnore
     private String password;
 

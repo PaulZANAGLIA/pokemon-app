@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.paulz.user.dto.UserDto;
 import com.paulz.user.entity.Role;
 import com.paulz.user.entity.User;
+import com.paulz.user.model.UserUpdateRequest;
 import com.paulz.user.repository.RoleRepository;
 import com.paulz.user.repository.UserRepository;
 
@@ -58,20 +59,20 @@ public class UserService {
         return convertToDto(savedUser);
     }
 
-    public UserDto updateUser(long id, UserDto userDto){
-        User user = this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found."));
-        user.setEmail(userDto.getEmail());
-        user.setUsername(userDto.getUsername());
-        user.setElo(userDto.getElo());
-        user.setRoles(userDto.getRoles().stream().map(roleRepository::findByName).collect(Collectors.toSet()));
-        user.setFriends(userDto.getFriends().stream().map(userRepository::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toSet()));
+    public UserDto updateUser(long id, UserUpdateRequest user){
 
-        if(userDto.getPassword() != null && !userDto.getPassword().isEmpty()){
-            user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
+        User userUpdated = this.userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found."));
+        userUpdated.setEmail(user.getEmail());
+        userUpdated.setUsername(user.getUsername());
+        userUpdated.setElo(user.getElo());
+        userUpdated.setRoles(user.getRoles().stream().map(roleRepository::findByName).collect(Collectors.toSet()));
+        userUpdated.setFriends(user.getFriends().stream().map(userRepository::findById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toSet()));
+
+        if(user.getPassword() != null && !user.getPassword().isEmpty()){
+            userUpdated.setPassword(this.passwordEncoder.encode(user.getPassword()));
         }
-
-        User updatedUser = this.userRepository.save(user);
-        return convertToDto(updatedUser);
+        User u = this.userRepository.save(userUpdated);
+        return convertToDto(u);
     }
 
     public boolean deleteUser(long id){

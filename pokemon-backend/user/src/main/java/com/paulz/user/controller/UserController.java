@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paulz.user.dto.UserDto;
+import com.paulz.user.model.UserUpdateRequest;
 import com.paulz.user.service.UserService;
 
 import jakarta.validation.Valid;
@@ -34,9 +35,9 @@ public class UserController {
         "(hasAuthority('MODERATOR') and @userService.getUserRoleById(#id).![name].contains('MEMBER')) or " +
         "(hasAuthority('MEMBER') and #id == authentication.principal.userId)"
     )
-    public ResponseEntity<UserDto> updateUser(@PathVariable long id, @Valid @RequestBody UserDto userDto) {
-       UserDto updatedUser = userService.updateUser(id, userDto);
-       return ResponseEntity.ok(updatedUser);
+    public ResponseEntity<UserDto> updateUser(@PathVariable long id, @Valid @RequestBody UserUpdateRequest user) {
+        UserDto updatedUser = userService.updateUser(id, user);
+        return ResponseEntity.ok(updatedUser);
     }
 
     

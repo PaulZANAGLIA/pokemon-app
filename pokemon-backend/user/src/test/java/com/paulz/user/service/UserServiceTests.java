@@ -26,6 +26,7 @@ import org.springframework.test.context.ActiveProfiles;
 import com.paulz.user.dto.UserDto;
 import com.paulz.user.entity.Role;
 import com.paulz.user.entity.User;
+import com.paulz.user.model.UserUpdateRequest;
 import com.paulz.user.repository.RoleRepository;
 import com.paulz.user.repository.UserRepository;
 
@@ -96,7 +97,7 @@ public class UserServiceTests {
 
     @Test
     public void testUpdateUser() {
-        UserDto updateUserDto = UserDto.builder()
+        UserUpdateRequest updateUserDto = UserUpdateRequest.builder()
         .id(1L)
         .username("updateuser")
         .password("encodedNewPassword")

@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -43,13 +44,14 @@ public class JwtUtil {
         }
     }
 
-    public String generateToken(long userId, String email, List<String> roles){
+    public String generateToken(UserPrincipal principal){
         return JWT
             .create()
-            .withSubject(String.valueOf(userId))
+            .withSubject(String.valueOf(principal.getUserId()))
             .withExpiresAt(Instant.now().plus(Duration.ofDays(VALIDITY_DAYS)))
-            .withClaim("email", email)
-            .withClaim("roles", roles)
+            .withClaim("email", principal.getEmail())
+            .withClaim("username", principal.getUsername())
+            .withClaim("roles", principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
             .sign(Algorithm.HMAC256(jwtProperties.getSecret()));
     }
 
@@ -70,6 +72,7 @@ public class JwtUtil {
         return UserPrincipal.builder()
             .userId(Long.valueOf(jwt.getSubject()))
             .email(jwt.getClaim("email").asString())
+            .username(jwt.getClaim("username").asString())
             .authorities(extractAuthoritiesFromClaim(jwt))
             .build();
     }

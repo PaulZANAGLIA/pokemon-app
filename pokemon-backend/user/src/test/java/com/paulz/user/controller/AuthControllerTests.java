@@ -102,13 +102,14 @@ public class AuthControllerTests {
     public void testLoginUser_ShouldReturnJwtToken() throws Exception {
         UserPrincipal principal = UserPrincipal.builder()
         .email(userDto.getEmail())
+        .email(userDto.getUsername())
         .authorities(userDto.getRoles().stream().map(r -> new SimpleGrantedAuthority(r)).toList())
         .userId(1L)
         .build();
         Authentication auth = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
 
         when(authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class))).thenReturn(auth);
-        when(jwtUtil.generateToken(Mockito.anyLong(), Mockito.anyString(), Mockito.anyList())).thenReturn("mocked_jwt_token");
+        when(jwtUtil.generateToken(Mockito.any())).thenReturn("mocked_jwt_token");
 
         mockMvc.perform(post("/api/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)

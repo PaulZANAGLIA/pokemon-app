@@ -33,6 +33,7 @@ public class UserDetailService implements UserDetailsService {
             return UserPrincipal.builder()
                 .userId(user.getId())
                 .email(user.getEmail())
+                .username(user.getUsername())
                 .authorities(user.getRoles().stream().map(r -> new SimpleGrantedAuthority(r.getName())).toList())
                 .password(user.getPassword())
                 .build();

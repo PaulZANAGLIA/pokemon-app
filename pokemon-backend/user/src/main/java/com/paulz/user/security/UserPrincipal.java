@@ -15,6 +15,7 @@ import lombok.Getter;
 public class UserPrincipal implements UserDetails {
 
     private final long userId;
+    private final String username;
     private final String email;
     @JsonIgnore
     private final String password;
@@ -30,8 +31,13 @@ public class UserPrincipal implements UserDetails {
         return password;
     }
 
-    @Override
-    public String getUsername() {
-       return email;
+    public String getEmail(){
+        return email;
     }
+
+    @Override
+    public String getUsername(){
+        return username;
+    }
+
 }

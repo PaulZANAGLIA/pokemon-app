@@ -1,0 +1,130 @@
+<div class="form">
+  <div
+    class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8"
+  >
+    <div class="bg-white shadow-lg rounded-lg p-8 max-w-sm w-full">
+      <div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Register
+        </h2>
+      </div>
+      <form
+        ngNativeValidate
+        (ngSubmit)="onSubmit()"
+        class="mt-8 space-y-6"
+        [formGroup]="registerForm"
+      >
+        <div class="rounded-md shadow-sm">
+          <div class="mb-4">
+            <label
+              for="username"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Username
+            </label>
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="username"
+              type="text"
+              placeholder="Username"
+              formControlName="username"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              for="email-address"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Email address</label
+            >
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="email-address"
+              type="email"
+              placeholder="dupont@gmail.com"
+              formControlName="email"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              for="password"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Password</label
+            >
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              for="passwordVerif"
+              class="block text-gray-700 text-sm font-bold mb-2"
+              >Confirm Password</label
+            >
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="passwordCheck"
+              type="password"
+              formControlName="passwordVerif"
+              placeholder="Confirm password"
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-yellow-500 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Register
+          </button>
+        </div>
+
+        <div
+          *ngIf="hasNonRequiredErrors() && message.length"
+          class="mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
+          {{ message }}
+
+          <div
+            *ngIf="registerForm.get('password')!.hasError('pattern')"
+            class="mt-6"
+          >
+            ● Password should be at least 6 characters.
+          </div>
+
+          <div
+            *ngIf="
+              registerForm.get('username')!.hasError('minlength') ||
+              registerForm.get('username')!.hasError('maxlength')
+            "
+            class="mt-6"
+          >
+            ● Username should be between 3 to 15 characters.
+          </div>
+
+          <div
+            *ngIf="registerForm.hasError('passwordsDoNotMatch')"
+            class="mt-6"
+          >
+            ● Passwords do not match.
+          </div>
+        </div>
+        <div
+          *ngIf="apiErrorMessage.length"
+          class="mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
+          ● {{ apiErrorMessage }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

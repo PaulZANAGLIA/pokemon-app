@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,10 +61,10 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponse loginUser(@Valid @RequestBody LoginRequest request) {
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        
         SecurityContextHolder.getContext().setAuthentication(auth);
         var principal = (UserPrincipal) auth.getPrincipal();
-        String token = jwtUtil.generateToken(principal.getUserId(), principal.getEmail(), principal.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
+        
+        String token = jwtUtil.generateToken(principal);
         
         return LoginResponse
             .builder()

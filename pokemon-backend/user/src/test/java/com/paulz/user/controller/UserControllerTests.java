@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.paulz.user.dto.UserDto;
 import com.paulz.user.entity.Role;
+import com.paulz.user.model.UserUpdateRequest;
 import com.paulz.user.security.UserPrincipal;
 import com.paulz.user.service.UserService;
 
@@ -94,9 +95,10 @@ public class UserControllerTests {
         // Given
         long userId = 2L; // This should match the authenticated user's I
 
+        UserUpdateRequest updatedModo = UserUpdateRequest.builder().id(userId).username("updateUsername").build();
         UserDto updatedModoDto = UserDto.builder().id(userId).username("updateUsername").build();
 
-        when(userService.updateUser(userId, modoDto)).thenReturn(updatedModoDto);
+        when(userService.updateUser(userId, updatedModo)).thenReturn(updatedModoDto);
 
         // When & Then
         mockMvc.perform(put("/api/users/{id}", userId)
@@ -113,9 +115,10 @@ public class UserControllerTests {
 
         Set<Role> roles = Set.of(Role.builder().name("MEMBER").build());
         UserDto updatedUserDto = UserDto.builder().id(userId).username("updateUsername").build();
+        UserUpdateRequest updatedUser = UserUpdateRequest.builder().id(userId).username("updateUsername").build();
         
         when(userService.getUserRoleById(userId)).thenReturn(roles);
-        when(userService.updateUser(userId, userDto)).thenReturn(updatedUserDto);
+        when(userService.updateUser(userId, updatedUser)).thenReturn(updatedUserDto);
 
         // When & Then
         mockMvc.perform(put("/api/users/{id}", userId)
@@ -131,9 +134,10 @@ public class UserControllerTests {
         long userId = 6L; 
         Set<Role> roles = Set.of(Role.builder().name("MODERATOR").build());
         UserDto updatedUserDto = UserDto.builder().id(userId).username("updateUsername").build();
-        
+        UserUpdateRequest updatedUser = UserUpdateRequest.builder().id(userId).username("updateUsername").build();
+
         when(userService.getUserRoleById(userId)).thenReturn(roles);
-        when(userService.updateUser(userId, userDto)).thenReturn(updatedUserDto);
+        when(userService.updateUser(userId, updatedUser)).thenReturn(updatedUserDto);
 
         // When & Then
         mockMvc.perform(put("/api/users/{id}", userId)
@@ -159,8 +163,9 @@ public class UserControllerTests {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         
         UserDto updatedUserDto = UserDto.builder().id(userId).username("updateUsername").build();
+        UserUpdateRequest updatedUser = UserUpdateRequest.builder().id(userId).username("updateUsername").build();
 
-        when(userService.updateUser(userId, userDto)).thenReturn(updatedUserDto);
+        when(userService.updateUser(userId, updatedUser)).thenReturn(updatedUserDto);
 
         // When & Then
         mockMvc.perform(put("/api/users/{id}", userId)
@@ -186,8 +191,9 @@ public class UserControllerTests {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         
         UserDto updatedUserDto = UserDto.builder().id(userId).username("updateUsername").build();
+        UserUpdateRequest updatedUser = UserUpdateRequest.builder().id(userId).username("updateUsername").build();
 
-        when(userService.updateUser(userId, userDto)).thenReturn(updatedUserDto);
+        when(userService.updateUser(userId, updatedUser)).thenReturn(updatedUserDto);
 
         // When & Then
         mockMvc.perform(put("/api/users/{id}", userId)
